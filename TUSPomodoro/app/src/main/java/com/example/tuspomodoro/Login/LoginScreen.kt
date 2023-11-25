@@ -1,5 +1,7 @@
 package com.example.tuspomodoro.Login
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -45,11 +47,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tuspomodoro.R
+import com.example.tuspomodoro.ui.theme.CustomColor
 import com.example.tuspomodoro.ui.theme.TUSPomodoroTheme
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen() {
+
+
     // Column that holds the entire login screen
     Column(
         modifier = Modifier
@@ -60,22 +66,18 @@ fun LoginScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         // Box and Text elements to be placed above the logo
-
-
-        Box(
+        Button(
+            onClick = {
+                // Handle button click logic here
+            },
             modifier = Modifier
                 .width(294.dp)
                 .height(78.dp)
-                .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 40.dp, bottomEnd = 40.dp))
-                .background(
-                    Color(
-                        red = 0.6431372761726379f,
-                        green = 0.5803921818733215f,
-                        blue = 0.3803921639919281f,
-                        alpha = 1f
-                    )
-                )
+                .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 40.dp, bottomEnd = 40.dp)),
+            colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
+
         ) {
+            // Button content (if any)
             Text(
                 text = "TUS POMODORO",
                 textAlign = TextAlign.Center,
@@ -86,15 +88,16 @@ fun LoginScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .padding(top = 8.dp) // Adjust the top padding to move the text down
+                    .padding(top = 18.dp) // Adjust the top padding to move the text down
                     .alpha(1f),
-                color = Color(red = 1f, green = 1f, blue = 1f, alpha = 1f),
+                color = Color.White, // Text color
                 fontWeight = FontWeight.Black,
                 fontStyle = FontStyle.Normal,
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp)) // Spacer for vertical spacing
+        // Spacer for vertical spacing
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Logo
         Image(
@@ -107,7 +110,8 @@ fun LoginScreen() {
                 .clip(MaterialTheme.shapes.medium)
         )
 
-        Spacer(modifier = Modifier.height(16.dp)) // spacer for vertical spacing
+        // Spacer for vertical spacing
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Username field
         val usernameState = remember { mutableStateOf("") }
@@ -123,7 +127,8 @@ fun LoginScreen() {
                 .padding(8.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp)) // spacer for vertical spacing
+        // Spacer for vertical spacing
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Password field
         val passwordState = remember { mutableStateOf("") }
@@ -143,19 +148,23 @@ fun LoginScreen() {
                 .padding(8.dp)
         )
 
-        Spacer(modifier = Modifier.height(16.dp)) // spacer for vertical spacing
+        // Spacer for vertical spacing
+        Spacer(modifier = Modifier.height(16.dp))
 
-        // Login button
+        // Login button with the same custom color
         Button(
-            onClick = {
-                // Handle login logic here // TO DO
-            },
-            colors = ButtonDefaults.buttonColors( Color(red = 1f, green = 1f, blue = 1f, alpha = 1f)) // set the background color of the button to #8e5c1c color brand
+            onClick = { println("Button Clicked!") },
+            modifier = Modifier.padding(10.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
         ) {
-            Text("Login")
+            Text(text = "Login")
         }
     }
+
+
+
 }
+
 
 @Preview(showBackground = true)
 @Composable

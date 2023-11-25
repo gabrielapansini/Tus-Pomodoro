@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.tuspomodoro.Login.LoginScreen
+import com.example.tuspomodoro.Pomodoro.CustomBoxWithText
 import com.example.tuspomodoro.ui.theme.TUSPomodoroTheme
 
 class MainActivity : ComponentActivity() {
@@ -48,7 +49,9 @@ class MainActivity : ComponentActivity() {
             TUSPomodoroTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    LoginScreen()
+                    CustomBoxWithText()
+                    //LoginScreen()
+
                 }
             }
         }
@@ -60,7 +63,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun LoginScreenPreview() {
     TUSPomodoroTheme {
-        LoginScreen()
+        CustomBoxWithText()
     }
 }
 
