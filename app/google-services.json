@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "464802262822",
+    "project_id": "tus-pomodoro",
+    "storage_bucket": "tus-pomodoro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:464802262822:android:b13ab9997461955da49be7",
+        "android_client_info": {
+          "package_name": "com.example.tuspomodoro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzlu8VlNaAHferQORD7D8LPOURAvgCuYY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
