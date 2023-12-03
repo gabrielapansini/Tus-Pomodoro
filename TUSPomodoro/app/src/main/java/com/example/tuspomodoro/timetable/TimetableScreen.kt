@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -14,7 +15,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -90,7 +90,54 @@ fun TimetableScreen() {
             )
         }
 
-        // Add timetable content here
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Dummy timetable data
+        val timetableEntries = timetableEntries()
+
+// ...
+
+// Dummy timetable display
+        Timetable(entries = timetableEntries)
+
+
+    }
+}
+
+fun timetableEntries(): List<TimetableEntry> {
+    return listOf(
+        TimetableEntry("Software Development", "Monday", "10:00 AM - 12:00 PM"),
+        TimetableEntry("Software Development", "Wednesday", "10:00 AM - 12:00 PM"),
+    )}
+@Composable
+fun TUSPomodoroButton() {
+    Button(
+        onClick = {
+            // Handle TUS POMODORO click
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(78.dp)
+            .clip(RoundedCornerShape(40.dp)),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = CustomColor,
+            contentColor = Color.White
+        ),
+    ) {
+        Text(
+            text = "TUS POMODORO",
+            textAlign = TextAlign.Center,
+            fontSize = 30.sp,
+            textDecoration = TextDecoration.None,
+            letterSpacing = 0.sp,
+            overflow = TextOverflow.Ellipsis,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 18.dp),
+            color = Color.White,
+            fontWeight = FontWeight.Black,
+            fontStyle = FontStyle.Normal,
+        )
     }
 }
 
@@ -163,40 +210,74 @@ fun TimetableDropdown(
                 )
             }
         )
-
-        
-
-    }
-        }
-
-@Composable
-fun TUSPomodoroButton() {
-    Button(
-        onClick = {
-            // Handle TUS POMODORO click
-        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(78.dp)
-            .clip(RoundedCornerShape(40.dp)),
-        colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
-    ) {
-        Text(
-            text = "TUS POMODORO",
-            textAlign = TextAlign.Center,
-            fontSize = 30.sp,
-            textDecoration = TextDecoration.None,
-            letterSpacing = 0.sp,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 18.dp),
-            color = Color.White,
-            fontWeight = FontWeight.Black,
-            fontStyle = FontStyle.Normal,
-        )
     }
 }
+
+@Composable
+fun Timetable(entries: List<TimetableEntry>) {
+    // Group timetable entries by day and time
+    val groupedEntries = entries.groupBy { it.day to it.time }
+
+    // Extract unique days and times
+    val days = entries.map { it.day }.distinct().sorted()
+    val times = entries.map { it.time }.distinct().sorted()
+
+    // Table header
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Spacer(modifier = Modifier.width(60.dp)) // Empty space for the time column
+        for (day in days) {
+            Text(
+                text = day,
+                color = Color.White,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
+            )
+        }
+    }
+
+    // Table content
+    for (time in times) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            // Time column
+            Text(
+                text = time,
+                color = Color.White,
+                modifier = Modifier
+                    .padding(8.dp, 0.dp, 8.dp, 0.dp)
+            )
+
+            // Timetable entries for each day
+            for (day in days) {
+                val entry = groupedEntries[day to time]?.getOrNull(0)
+                Text(
+                    text = entry?.course ?: "",
+                    color = Color.White,
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                )
+            }
+        }
+    }
+}
+
+data class TimetableEntry(
+    val course: String,
+    val day: String,
+    val time: String
+)
 
 @Preview
 @Composable
