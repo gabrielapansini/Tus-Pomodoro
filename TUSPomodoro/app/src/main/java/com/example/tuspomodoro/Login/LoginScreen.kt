@@ -65,10 +65,10 @@ fun LoginScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Box and Text elements to be placed above the logo
+        // Box and Text elements above the logo
         Button(
             onClick = {
-                // Handle button click logic here
+                // TO DO 
             },
             modifier = Modifier
                 .width(294.dp)
@@ -77,7 +77,7 @@ fun LoginScreen() {
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
 
         ) {
-            // Button content (if any)
+            
             Text(
                 text = "TUS POMODORO",
                 textAlign = TextAlign.Center,
@@ -105,7 +105,7 @@ fun LoginScreen() {
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp) // Increase the size of the logo
-                .background(MaterialTheme.colorScheme.background) // Set the background color to the theme's background color
+                .background(MaterialTheme.colorScheme.background) 
                 .padding(16.dp)
                 .clip(MaterialTheme.shapes.medium)
         )
@@ -151,7 +151,7 @@ fun LoginScreen() {
         // Spacer for vertical spacing
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Login button with the same custom color
+        // Login button 
         Button(
             onClick = { println("Button Clicked!") },
             modifier = Modifier.padding(10.dp),
@@ -166,10 +166,4 @@ fun LoginScreen() {
 }
 
 
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    TUSPomodoroTheme {
-        LoginScreen()
-    }
-}
+

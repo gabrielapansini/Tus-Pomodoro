@@ -1,7 +1,5 @@
 package com.example.tuspomodoro.Pomodoro
 
-import android.graphics.Matrix
-import android.graphics.RectF
 import android.os.CountDownTimer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -16,12 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -41,19 +34,17 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.PathParser
 import com.example.tuspomodoro.R
 import com.example.tuspomodoro.ui.theme.CustomColor
 
-
-//TIMER COUNTER FOR THE POMODORO
-
-
-
-
-
 @Composable
 fun CustomBoxWithText() {
+    var isTimerRunning by remember { mutableStateOf(false) }
+    var initialDuration = remember { 25 * 60 * 1000L }
+    var timeRemaining by remember { mutableStateOf(initialDuration) }
+
+    var countDownTimer: CountDownTimer? by remember { mutableStateOf(null) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -77,10 +68,19 @@ fun CustomBoxWithText() {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Your existing content (Button, Text, etc.) goes here
+
+            // Start/Pause Button
             Button(
                 onClick = {
-                    // Handle button click logic here
+                    if (!isTimerRunning) {
+                        countDownTimer = createTimer(timeRemaining, 1000) { millisUntilFinished ->
+                            timeRemaining = millisUntilFinished
+                        }
+                        countDownTimer?.start()
+                    } else {
+                        countDownTimer?.cancel()
+                    }
+                    isTimerRunning = !isTimerRunning
                 },
                 modifier = Modifier
                     .width(294.dp)
@@ -100,7 +100,7 @@ fun CustomBoxWithText() {
             ) {
                 // Button content (if any)
                 Text(
-                    text = "TUS POMODORO",
+                    text = if (isTimerRunning) "Pause" else "Start",
                     textAlign = TextAlign.Center,
                     fontSize = 30.sp,
                     textDecoration = TextDecoration.None,
@@ -152,19 +152,35 @@ fun CustomBoxWithText() {
                 modifier = Modifier
                     .size(78.dp)
                     .clip(RoundedCornerShape(50))
-                    .offset(y = (-12).dp), // Adjust the negative offset to move the button higher
+                    .offset(y = (-12).dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = CustomColor,
                     contentColor = Color.White
                 ),
             ) {
                 Icon(
-                    imageVector = Icons.Default.PlayArrow,
+                    imageVector = if (isTimerRunning) Icons.Default.PlayArrow else Icons.Default.PlayArrow,
                     contentDescription = null,
                     tint = Color.White,
                     modifier = Modifier.size(24.dp)
                 )
             }
+        }
+    }
+}
+
+private fun createTimer(
+    millisInFuture: Long,
+    countDownInterval: Long,
+    onTick: (Long) -> Unit
+): CountDownTimer {
+    return object : CountDownTimer(millisInFuture, countDownInterval) {
+        override fun onTick(millisUntilFinished: Long) {
+            onTick.invoke(millisUntilFinished)
+        }
+
+        override fun onFinish() {
+
         }
     }
 }
