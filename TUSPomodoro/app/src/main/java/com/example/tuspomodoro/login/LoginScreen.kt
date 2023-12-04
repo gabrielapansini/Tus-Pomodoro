@@ -87,7 +87,7 @@ fun LoginScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .padding(top = 18.dp) // Adjust the top padding to move the text down
+                    .padding(top = 18.dp)
                     .alpha(1f),
                 color = Color.White, // Text color
                 fontWeight = FontWeight.Black,
@@ -103,7 +103,7 @@ fun LoginScreen() {
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,
             modifier = Modifier
-                .size(200.dp) // Increase the size of the logo
+                .size(200.dp)
                 .background(MaterialTheme.colorScheme.background) 
                 .padding(16.dp)
                 .clip(MaterialTheme.shapes.medium)

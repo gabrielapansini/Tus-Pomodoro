@@ -7,9 +7,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -22,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -96,7 +102,7 @@ fun CustomBoxWithText() {
                     contentColor = Color.White
                 ),
             ) {
-                // Button content (if any)
+                // Button content
                 Text(
                     text = if (isTimerRunning) "Pause" else "Start",
                     textAlign = TextAlign.Center,
@@ -162,8 +168,42 @@ fun CustomBoxWithText() {
                     tint = Color.White,
                     modifier = Modifier.size(24.dp)
                 )
+
+                // Footer menu
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    FooterIcon(imageVector = Icons.Default.Home, color = CustomColor)
+                    FooterIcon(imageVector = Icons.Default.DateRange, color = CustomColor)
+                    FooterIcon(imageVector = Icons.Default.Check, color = CustomColor)
+                    FooterIcon(imageVector = Icons.Default.Favorite, color = CustomColor)
+                }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FooterIcon(imageVector: ImageVector, color: Color) {
+    Surface(
+        color = Color.Transparent,
+        onClick = {
+            // Handle icon click
+        },
+        modifier = Modifier
+            .size(40.dp)
+            .padding(8.dp)
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            tint = color,
+            modifier = Modifier.size(40.dp)
+        )
     }
 }
 

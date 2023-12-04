@@ -6,8 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
@@ -17,9 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
+
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -95,7 +91,6 @@ fun TimetableScreen() {
         // Dummy timetable data
         val timetableEntries = timetableEntries()
 
-// ...
 
 // Dummy timetable display
         Timetable(entries = timetableEntries)
@@ -106,8 +101,10 @@ fun TimetableScreen() {
 
 fun timetableEntries(): List<TimetableEntry> {
     return listOf(
-        TimetableEntry("Software Development", "Monday", "10:00 AM - 12:00 PM"),
-        TimetableEntry("Software Development", "Wednesday", "10:00 AM - 12:00 PM"),
+        TimetableEntry("Software Dev", "Mon", "10AM-12AM"),
+        TimetableEntry("Software Dev", "Tues", "11AM-12AM"),
+        TimetableEntry("OOP", "Wed", "12AM-14AM"),
+        TimetableEntry("Mobile Dev", "Fri", "10AM-12AM"),
     )}
 @Composable
 fun TUSPomodoroButton() {
@@ -199,9 +196,9 @@ fun TimetableDropdown(
                 .fillMaxWidth()
                 .clickable { expanded = true },
             colors = TextFieldDefaults.outlinedTextFieldColors(
-                cursorColor = Color.White, // Customize cursor color if needed
-                focusedBorderColor = Color.White, // Customize focused border color
-                unfocusedBorderColor = Color.White.copy(alpha = 0.12f) // Customize unfocused border color
+                cursorColor = Color.White,
+                focusedBorderColor = Color.White,
+                unfocusedBorderColor = Color.White.copy(alpha = 0.12f) 
             ),
             trailingIcon = {
                 Icon(
@@ -218,7 +215,6 @@ fun Timetable(entries: List<TimetableEntry>) {
     // Group timetable entries by day and time
     val groupedEntries = entries.groupBy { it.day to it.time }
 
-    // Extract unique days and times
     val days = entries.map { it.day }.distinct().sorted()
     val times = entries.map { it.time }.distinct().sorted()
 
@@ -229,7 +225,9 @@ fun Timetable(entries: List<TimetableEntry>) {
             .padding(8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Spacer(modifier = Modifier.width(60.dp)) // Empty space for the time column
+        Spacer(modifier = Modifier.width(80.dp))
+
+        // Weekday headers
         for (day in days) {
             Text(
                 text = day,
@@ -237,6 +235,7 @@ fun Timetable(entries: List<TimetableEntry>) {
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally)
             )
         }
     }
@@ -256,22 +255,34 @@ fun Timetable(entries: List<TimetableEntry>) {
                 color = Color.White,
                 modifier = Modifier
                     .padding(8.dp, 0.dp, 8.dp, 0.dp)
+                    .wrapContentSize(Alignment.Center)
             )
 
             // Timetable entries for each day
             for (day in days) {
                 val entry = groupedEntries[day to time]?.getOrNull(0)
-                Text(
-                    text = entry?.course ?: "",
-                    color = Color.White,
+                Box(
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp)
-                )
+                        .fillMaxWidth()
+                        .heightIn(min = 40.dp)
+                        .background(Color.Gray, RoundedCornerShape(4.dp))
+                ) {
+                    Text(
+                        text = entry?.course ?: "",
+                        color = Color.White,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth()
+                    )
+                }
             }
         }
     }
 }
+
 
 data class TimetableEntry(
     val course: String,

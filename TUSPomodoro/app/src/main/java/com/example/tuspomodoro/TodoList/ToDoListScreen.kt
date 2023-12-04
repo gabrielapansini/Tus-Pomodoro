@@ -60,13 +60,11 @@ fun ToDoList() {
             .background(color = Color.Black)
             .padding(16.dp)
     ) {
-        // Spacer for vertical spacing
         Spacer(modifier = Modifier.height(64.dp))
 
         TUSPomodoroButton()
 
-        // Huge space between button and content
-        Spacer(modifier = Modifier.height(128.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         LazyColumn {
             items(tasks.value.size) { index ->
@@ -87,7 +85,7 @@ fun ToDoList() {
             OutlinedTextField(
                 value = newTask,
                 onValueChange = { newTask = it },
-                label = { Text("New Task",  color = Color.White) },
+                label = { Text("New Task", color = Color.White) },
                 singleLine = true,
                 modifier = Modifier.weight(1f)
             )
@@ -97,58 +95,36 @@ fun ToDoList() {
             Button(
                 onClick = { addTask() },
                 modifier = Modifier.size(width = 100.dp, height = 40.dp),
-                colors = ButtonDefaults.run { buttonColors(Color.Blue) }
+                colors = ButtonDefaults.run { buttonColors(containerColor = CustomColor, contentColor = Color.White) }
             ) {
                 Text(
                     text = "Add Task",
                     color = Color.White,
                     style = MaterialTheme.typography.bodyMedium
                 )
-
-
-
-                // Footer menu
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(139.dp)
-                        .clip(
-                            RoundedCornerShape(
-                                topStart = 54.22222137451172.dp,
-                                topEnd = 54.22222137451172.dp,
-                                bottomStart = 54.22222137451172.dp,
-                                bottomEnd = 54.22222137451172.dp
-                            )
-                        )
-                        .background(
-                            Color(
-                                red = 0.6431372761726379f,
-                                green = 0.5803921818733215f,
-                                blue = 0.3803921639919281f,
-                                alpha = 1f
-                            )
-                        )
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        FooterIcon(imageVector = Icons.Default.Home)
-                        FooterIcon(imageVector = Icons.Default.DateRange)
-                        FooterIcon(imageVector = Icons.Default.Check)
-                        FooterIcon(imageVector = Icons.Default.Favorite)
-                    }
-                }
             }
+        }
+
+        Spacer(modifier = Modifier.weight(1f)) // Spacer to push the footer menu to the bottom
+
+        // Footer menu
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            FooterIcon(imageVector = Icons.Default.Home, color = CustomColor)
+            FooterIcon(imageVector = Icons.Default.DateRange, color = CustomColor)
+            FooterIcon(imageVector = Icons.Default.Check, color = CustomColor)
+            FooterIcon(imageVector = Icons.Default.Favorite, color = CustomColor)
         }
     }
 }
+
             @OptIn(ExperimentalMaterial3Api::class)
             @Composable
-            fun FooterIcon(imageVector: ImageVector) {
+            fun FooterIcon(imageVector: ImageVector, color: Color) {
                 Surface(
                     color = Color.Transparent,
                     onClick = {
@@ -160,12 +136,13 @@ fun ToDoList() {
                 ) {
                     Icon(
                         imageVector = imageVector,
-                        contentDescription = null, // You can provide a content description if needed
-                        tint = Color.White,
+                        contentDescription = null,
+                        tint = color,
                         modifier = Modifier.size(40.dp)
                     )
                 }
             }
+
 
 @Composable
 fun TUSPomodoroButton() {
@@ -189,9 +166,9 @@ fun TUSPomodoroButton() {
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(top = 18.dp) // Adjust the top padding to move the text down
+                .padding(top = 18.dp)
                 .alpha(1f),
-            color = Color.White, // Text color
+            color = Color.White,
             fontWeight = FontWeight.Black,
             fontStyle = FontStyle.Normal,
         )
