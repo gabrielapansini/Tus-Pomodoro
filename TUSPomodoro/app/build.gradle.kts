@@ -59,6 +59,14 @@ dependencies {
     //Navigation - TUS Pomodoro
     implementation("androidx.navigation:navigation-compose:2.7.5")
     //End Navigation
+
+    //ViewModel /LiveData
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-rc01")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.0-beta02")
+    //End ViewModel /LiveData
+
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")

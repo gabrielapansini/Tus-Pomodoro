@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,9 +26,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -49,11 +54,18 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tuspomodoro.R
 import com.example.tuspomodoro.ui.theme.CustomColor
 import com.example.tuspomodoro.ui.theme.TUSPomodoroTheme
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(navController: NavController) {
+fun SignUpScreen(navController: NavController, viewModel: AuthRegViewModel = viewModel()) {
+    var emailState by remember{mutableStateOf("")}
+    var passwordState by remember{mutableStateOf("")}
+    val errorMessage by viewModel.errorMessage.observeAsState()
+
+    val userId = viewModel.userId.observeAsState()
 
 
     // Column that holds the entire sign up screen
@@ -65,6 +77,18 @@ fun SignUpScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (errorMessage != null) {
+            AlertDialog(
+                onDismissRequest = { viewModel.errorMessage.value = null },
+                title = { Text("Error") },
+                text = { Text(text = errorMessage!!) },
+                confirmButton = {
+                    TextButton(onClick = { viewModel.errorMessage.value = null }) {
+                        Text(text = "OK")
+                    }
+                }
+            )
+        }
         // Box and Text elements above the logo
         Button(
             onClick = {
@@ -121,11 +145,11 @@ fun SignUpScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Username field
-        val usernameState = remember { mutableStateOf("") }
+
         OutlinedTextField(
-            value = usernameState.value,
-            onValueChange = { usernameState.value = it },
-            label = { Text("Username") },
+            value = emailState,
+            onValueChange = { emailState = it },
+            label = { Text("Email") },
             leadingIcon = {
                 Icon(Icons.Default.Person, contentDescription = null)
             },
@@ -138,10 +162,10 @@ fun SignUpScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Password field
-        val passwordState = remember { mutableStateOf("") }
+
         OutlinedTextField(
-            value = passwordState.value,
-            onValueChange = { passwordState.value = it },
+            value = passwordState,
+            onValueChange = { passwordState = it },
             label = { Text("Password") },
             leadingIcon = {
                 Icon(Icons.Default.Lock, contentDescription = null)
@@ -158,13 +182,40 @@ fun SignUpScreen(navController: NavController) {
         // Spacer for vertical spacing
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Login button 
+        // Sign Up button
         Button(
-            onClick = { navController.navigate(Screen.LoginScreen.route) },
+            onClick = { viewModel.registerUser(emailState.lowercase(), passwordState)
+
+                // Navigate to the Pomodoro screen if the userId is not null
+                if (userId.value != null) {
+                    navController.navigate("pomodoro/${userId.value}")
+
+                    /*Log out functionality
+                    *
+                    * viewModel.logoutUser()
+                        // Additional logic, such as navigating to the login screen
+                        navController.navigate(Screen.LoginScreen.route)
+                       */
+                }
+
+                      },
             modifier = Modifier.padding(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
         ) {
             Text(text = "SignUp")
+        }
+
+        // Login Page Button
+        Button(
+            onClick = { navController.navigate(Screen.LoginScreen.route) },
+            modifier = Modifier.padding(10.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = Color.Black),
+        ) {
+            Text(
+                text = "Already have an account, Login",
+                modifier = Modifier
+                    .padding(4.dp)
+            )
         }
     }
 

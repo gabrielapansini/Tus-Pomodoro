@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,9 +26,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -44,6 +49,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tuspomodoro.R
 import com.example.tuspomodoro.ui.theme.CustomColor
 import com.example.tuspomodoro.ui.theme.TUSPomodoroTheme
@@ -51,8 +59,12 @@ import com.example.tuspomodoro.ui.theme.TUSPomodoroTheme
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController:NavController, viewModel: AuthRegViewModel = viewModel()) {
+    var emailState by remember{mutableStateOf("")}
+    var passwordState by remember{mutableStateOf("")}
+    val errorMessage by viewModel.errorMessage.observeAsState()
 
+    val userId = viewModel.userId.observeAsState()
 
     // Column that holds the entire login screen
     Column(
@@ -63,6 +75,18 @@ fun LoginScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        if (errorMessage != null) {
+            AlertDialog(
+                onDismissRequest = { viewModel.errorMessage.value = null },
+                title = { Text("Error") },
+                text = { Text(text = errorMessage!!) },
+                confirmButton = {
+                    TextButton(onClick = { viewModel.errorMessage.value = null }) {
+                        Text(text = "OK")
+                    }
+                }
+            )
+        }
         // Box and Text elements above the logo
         Button(
             onClick = {
@@ -111,12 +135,11 @@ fun LoginScreen() {
         // Spacer for vertical spacing
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Username field
-        val usernameState = remember { mutableStateOf("") }
+        // Email Field
         OutlinedTextField(
-            value = usernameState.value,
-            onValueChange = { usernameState.value = it },
-            label = { Text("Username") },
+            value = emailState,
+            onValueChange = { emailState = it },
+            label = { Text("Email") },
             leadingIcon = {
                 Icon(Icons.Default.Person, contentDescription = null)
             },
@@ -129,10 +152,9 @@ fun LoginScreen() {
         Spacer(modifier = Modifier.height(16.dp))
 
         // Password field
-        val passwordState = remember { mutableStateOf("") }
         OutlinedTextField(
-            value = passwordState.value,
-            onValueChange = { passwordState.value = it },
+            value = passwordState,
+            onValueChange = { passwordState = it },
             label = { Text("Password") },
             leadingIcon = {
                 Icon(Icons.Default.Lock, contentDescription = null)
@@ -151,11 +173,29 @@ fun LoginScreen() {
 
         // Login button 
         Button(
-            onClick = { println("Button Clicked!") },
+            onClick = { viewModel.loginUser(emailState.lowercase(), passwordState)
+
+                // Navigate to the Pomodoro screen if the userId is not null
+                if (userId.value != null) {
+                    navController.navigate("pomodoro/${userId.value}")
+                } },
             modifier = Modifier.padding(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
         ) {
             Text(text = "Login")
+        }
+
+        // Login Page Button
+        Button(
+            onClick = { navController.navigate(Screen.SignUpScreen.route) },
+            modifier = Modifier.padding(10.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent, contentColor = Color.Black),
+        ) {
+            Text(
+                text = "Don't have an account, Register",
+                modifier = Modifier
+                    .padding(4.dp)
+            )
         }
     }
 
@@ -169,6 +209,7 @@ fun LoginScreen() {
 @Composable
 fun LoginScreenPreview() {
     TUSPomodoroTheme {
-        LoginScreen()
+        val navController = rememberNavController()
+        LoginScreen(navController)
     }
 }

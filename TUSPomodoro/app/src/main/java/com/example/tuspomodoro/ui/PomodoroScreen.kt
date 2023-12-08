@@ -38,14 +38,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tuspomodoro.R
 import com.example.tuspomodoro.ui.theme.CustomColor
 
 @Composable
-fun CustomBoxWithText() {
+fun CustomBoxWithText(navController: NavController, userId: String?) {
+
     var isTimerRunning by remember { mutableStateOf(false) }
     var initialDuration = remember { 25 * 60 * 1000L }
     var timeRemaining by remember { mutableStateOf(initialDuration) }
+
 
     var countDownTimer: CountDownTimer? by remember { mutableStateOf(null) }
 
@@ -54,6 +58,7 @@ fun CustomBoxWithText() {
             .fillMaxSize()
             .background(color = Color.Transparent)
     ) {
+
         // Image with background
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -119,6 +124,7 @@ fun CustomBoxWithText() {
                     fontWeight = FontWeight.Black,
                     fontStyle = FontStyle.Normal,
                 )
+
             }
 
             // Spacer for vertical spacing
@@ -145,8 +151,10 @@ fun CustomBoxWithText() {
                 )
             }
 
+
             // Spacer after Circle
             Spacer(modifier = Modifier.height(8.dp))
+            Text(text = "User ID: $userId")
 
             // Start Button
             Button(
@@ -228,7 +236,8 @@ private fun createTimer(
 fun PreviewCustomBoxWithText() {
     MaterialTheme {
         Surface {
-            CustomBoxWithText()
+            val navController = rememberNavController()
+            CustomBoxWithText(navController,"data")
         }
     }
 }

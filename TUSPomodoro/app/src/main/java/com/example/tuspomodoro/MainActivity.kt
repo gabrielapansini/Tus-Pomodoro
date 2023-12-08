@@ -10,9 +10,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.tuspomodoro.ui.AuthRegViewModel
 import com.example.tuspomodoro.ui.CustomBoxWithText
 import com.example.tuspomodoro.ui.LoginScreen
 import com.example.tuspomodoro.ui.Screen
@@ -40,19 +42,24 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun NavGraph(startDestination: String = Screen.SignUpScreen.route){
     val navController = rememberNavController()
+    val viewModel: AuthRegViewModel = viewModel()
     NavHost(navController = navController, startDestination = startDestination){
         composable(Screen.SignUpScreen.route){ SignUpScreen(navController)}
-        composable(Screen.LoginScreen.route){ LoginScreen()}
-        composable(Screen.PomodoroScreen.route){ CustomBoxWithText()}
+        composable(Screen.LoginScreen.route){ LoginScreen(navController)}
+        //composable(Screen.PomodoroScreen.route){ CustomBoxWithText()}
         composable(Screen.TimeTableScreen.route){ TimetableScreen()}
         composable(Screen.ToDoListScreen.route){ ToDoList()}
+        composable("pomodoro/{userId}") { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId")
+            CustomBoxWithText(navController, userId)
+        }
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun LoginScreenPreview() {
     TUSPomodoroTheme {
-        CustomBoxWithText()
+       // CustomBoxWithText()
     }
 }
 
