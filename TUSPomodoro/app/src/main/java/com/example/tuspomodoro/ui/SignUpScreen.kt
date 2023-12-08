@@ -1,4 +1,4 @@
-package com.example.tuspomodoro.login
+package com.example.tuspomodoro.ui
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
@@ -44,18 +44,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.tuspomodoro.R
-import com.example.tuspomodoro.pomodoro.CustomBoxWithText
 import com.example.tuspomodoro.ui.theme.CustomColor
 import com.example.tuspomodoro.ui.theme.TUSPomodoroTheme
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen() {
+fun SignUpScreen(navController: NavController) {
 
 
-    // Column that holds the entire login screen
+    // Column that holds the entire sign up screen
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -72,7 +73,14 @@ fun LoginScreen() {
             modifier = Modifier
                 .width(294.dp)
                 .height(78.dp)
-                .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 40.dp, bottomEnd = 40.dp)),
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 40.dp,
+                        topEnd = 40.dp,
+                        bottomStart = 40.dp,
+                        bottomEnd = 40.dp
+                    )
+                ),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
 
         ) {
@@ -104,7 +112,7 @@ fun LoginScreen() {
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
-                .background(MaterialTheme.colorScheme.background) 
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
                 .clip(MaterialTheme.shapes.medium)
         )
@@ -152,11 +160,11 @@ fun LoginScreen() {
 
         // Login button 
         Button(
-            onClick = { println("Button Clicked!") },
+            onClick = { navController.navigate(Screen.LoginScreen.route) },
             modifier = Modifier.padding(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
         ) {
-            Text(text = "Login")
+            Text(text = "SignUp")
         }
     }
 
@@ -168,8 +176,9 @@ fun LoginScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun LoginScreenPreview() {
+fun SignUpScreenPreview() {
     TUSPomodoroTheme {
-        LoginScreen()
+        val navController = rememberNavController()
+        SignUpScreen(navController)
     }
 }

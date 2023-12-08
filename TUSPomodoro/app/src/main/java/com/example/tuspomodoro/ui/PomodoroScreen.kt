@@ -1,4 +1,4 @@
-package com.example.tuspomodoro.pomodoro
+package com.example.tuspomodoro.ui
 
 import android.os.CountDownTimer
 import androidx.compose.foundation.Canvas

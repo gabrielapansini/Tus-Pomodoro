@@ -1,4 +1,4 @@
-package com.example.tuspomodoro.timetable
+package com.example.tuspomodoro.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -45,12 +45,17 @@ fun TimetableScreen() {
     var selectedGroup by remember { mutableStateOf("") }
     var selectedWeek by remember { mutableStateOf("") }
 
+
+
+//Black background
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.Black)
             .padding(16.dp)
     ) {
+
+
         TUSPomodoroButton()
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -198,7 +203,7 @@ fun TimetableDropdown(
             colors = TextFieldDefaults.outlinedTextFieldColors(
                 cursorColor = Color.White,
                 focusedBorderColor = Color.White,
-                unfocusedBorderColor = Color.White.copy(alpha = 0.12f) 
+                unfocusedBorderColor = Color.White.copy(alpha = 0.12f)
             ),
             trailingIcon = {
                 Icon(

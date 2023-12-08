@@ -56,6 +56,9 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("androidx.compose.ui:ui")
+    //Navigation - TUS Pomodoro
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+    //End Navigation
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
