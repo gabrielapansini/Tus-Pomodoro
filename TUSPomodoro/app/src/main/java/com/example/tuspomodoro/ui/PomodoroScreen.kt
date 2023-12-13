@@ -55,7 +55,8 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Transparent)
+            .background(color = Color.Transparent),
+        contentAlignment = Alignment.TopCenter // Align content to the top center
     ) {
         // Image with background
         Image(
@@ -67,19 +68,20 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
             contentScale = ContentScale.Crop
         )
 
-        // Box and Text elements above the logo
+        // button
         Button(
             onClick = {
-                // TO DO
+                navController.navigate(Screen.ToDoListScreen.route)
             },
             modifier = Modifier
-                .width(294.dp)
+                .fillMaxWidth()
                 .height(78.dp)
-                .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 40.dp, bottomEnd = 40.dp)),
+                .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 40.dp, bottomEnd = 40.dp))
+                .padding(top = 18.dp),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
         ) {
             Text(
-                text = "TUS POMODORO",
+                text = "TO DO LIST",
                 textAlign = TextAlign.Center,
                 fontSize = 30.sp,
                 textDecoration = TextDecoration.None,
@@ -88,13 +90,14 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .fillMaxHeight()
-                    .padding(top = 18.dp)
+                    .padding(top = 8.dp)
                     .alpha(1f),
-                color = Color.White, // Text color
+                color = Color.White,
                 fontWeight = FontWeight.Black,
                 fontStyle = FontStyle.Normal,
             )
         }
+
 
         // Circle background
         Canvas(
