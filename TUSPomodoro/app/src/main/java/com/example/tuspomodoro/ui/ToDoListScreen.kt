@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +27,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -35,20 +35,26 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.tuspomodoro.ui.Screen
 import com.example.tuspomodoro.ui.theme.CustomColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ToDoList() {
+fun ToDoList(navController: NavController) {
     val tasks = remember { mutableStateOf(mutableListOf("Task 1", "Task 2", "Task 3")) }
     var newTask by remember { mutableStateOf("") }
 
     fun addTask() {
         if (newTask.isNotBlank()) {
-            tasks.value.add(newTask)
+            tasks.value = tasks.value.toMutableList().apply {
+                add(newTask)
+            }
             newTask = ""
         }
     }
+
 
     fun deleteTask(task: String) {
         tasks.value.remove(task)
@@ -114,34 +120,42 @@ fun ToDoList() {
                 .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            FooterIcon(imageVector = Icons.Default.Home, color = CustomColor)
-            FooterIcon(imageVector = Icons.Default.DateRange, color = CustomColor)
-            FooterIcon(imageVector = Icons.Default.Check, color = CustomColor)
-            FooterIcon(imageVector = Icons.Default.Favorite, color = CustomColor)
+            FooterIcon(imageVector = Icons.Default.Home, color = CustomColor) {
+                navController.navigate(Screen.PomodoroScreen.route)
+            }
+            FooterIcon(imageVector = Icons.Default.DateRange, color = CustomColor) {
+                navController.navigate(Screen.TimeTableScreen.route)
+            }
+            FooterIcon(imageVector = Icons.Default.Check, color = CustomColor) {
+                navController.navigate(Screen.ToDoListScreen.route)
+            }
+            FooterIcon(imageVector = Icons.Default.Phone, color = CustomColor) {
+                navController.navigate(Screen.Contact.route)
+            }
         }
     }
 }
 
-            @OptIn(ExperimentalMaterial3Api::class)
-            @Composable
-            fun FooterIcon(imageVector: ImageVector, color: Color) {
-                Surface(
-                    color = Color.Transparent,
-                    onClick = {
-                        // Handle icon click
-                    },
-                    modifier = Modifier
-                        .size(40.dp)
-                        .padding(8.dp)
-                ) {
-                    Icon(
-                        imageVector = imageVector,
-                        contentDescription = null,
-                        tint = color,
-                        modifier = Modifier.size(40.dp)
-                    )
-                }
-            }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun FooterIcon(imageVector: ImageVector, color: Color, onClick: () -> Unit) {
+    Surface(
+        color = Color.Transparent,
+        onClick = onClick,
+        modifier = Modifier
+            .size(40.dp)
+            .padding(8.dp)
+    ) {
+        Icon(
+            imageVector = imageVector,
+            contentDescription = null,
+            tint = color,
+            modifier = Modifier.size(40.dp)
+        )
+    }
+}
+
 
 
 @Composable
@@ -216,7 +230,8 @@ fun ToDoListItem(task: String, onCompletion: () -> Unit, onDelete: () -> Unit) {
 fun PreviewToDoList() {
     MaterialTheme {
         Surface {
-            ToDoList()
+            val navController = rememberNavController()
+            ToDoList(navController)
         }
     }
 }

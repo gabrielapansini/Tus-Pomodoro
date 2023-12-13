@@ -121,7 +121,7 @@ fun LoginScreen(navController:NavController, viewModel: AuthRegViewModel = viewM
         // Spacer for vertical spacing
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Logo
+        // Logo ref: I got the image from the TUS branding
         Image(
             painter = painterResource(id = R.drawable.logo),
             contentDescription = null,

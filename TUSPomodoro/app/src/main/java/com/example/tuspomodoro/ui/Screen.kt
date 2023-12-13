@@ -7,4 +7,6 @@ sealed class Screen(val route: String){
     object TimeTableScreen: Screen("timetable")
 
     object PomodoroScreen: Screen("pomodoro")
+
+    object Contact: Screen("contact")
 }

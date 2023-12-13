@@ -67,6 +67,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.6.0-beta02")
     //End ViewModel /LiveData
 
+    implementation("com.google.firebase:firebase-firestore:24.10.0")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")

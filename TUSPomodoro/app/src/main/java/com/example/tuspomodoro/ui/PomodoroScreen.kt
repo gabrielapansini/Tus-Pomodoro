@@ -1,16 +1,20 @@
 package com.example.tuspomodoro.ui
 
+import FooterIcon
 import android.os.CountDownTimer
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -44,21 +48,19 @@ import com.example.tuspomodoro.R
 import com.example.tuspomodoro.ui.theme.CustomColor
 
 @Composable
-fun CustomBoxWithText(navController: NavController, userId: String?) {
-
+fun Pomodoro(navController: NavController, userId: String?) {
     var isTimerRunning by remember { mutableStateOf(false) }
     var initialDuration = remember { 25 * 60 * 1000L }
     var timeRemaining by remember { mutableStateOf(initialDuration) }
-
 
     var countDownTimer: CountDownTimer? by remember { mutableStateOf(null) }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = Color.Transparent)
+            .background(color = Color.Transparent),
+        contentAlignment = Alignment.TopCenter // Align content to the top center
     ) {
-
         // Image with background
         Image(
             painter = painterResource(id = R.drawable.background),
@@ -69,15 +71,93 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
             contentScale = ContentScale.Crop
         )
 
-        // Box and Text elements to be placed above the logo
+        // Button
+        Button(
+            onClick = {
+                navController.navigate(Screen.ToDoListScreen.route)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(78.dp)
+                .clip(
+                    RoundedCornerShape(
+                        topStart = 40.dp,
+                        topEnd = 40.dp,
+                        bottomStart = 40.dp,
+                        bottomEnd = 40.dp
+                    )
+                )
+                .padding(top = 18.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = CustomColor,
+                contentColor = Color.White
+            ),
+        ) {
+            Text(
+                text = "TO DO LIST",
+                textAlign = TextAlign.Center,
+                fontSize = 30.sp,
+                textDecoration = TextDecoration.None,
+                letterSpacing = 0.sp,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .padding(top = 8.dp)
+                    .alpha(1f),
+                color = Color.White,
+                fontWeight = FontWeight.Black,
+                fontStyle = FontStyle.Normal,
+            )
+        }
+
+        // Circle background
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(color = Color.Gray.copy(alpha = 0.2f))
+        ) {
+            val circleRadius = (size.minDimension - 2 * 16.dp.toPx()) / 2
+            drawCircle(
+                color = Color.Transparent,
+                radius = circleRadius,
+                center = center
+            )
+        }
+
+        // Timer circle
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+        ) {
+            val circleRadius = (size.minDimension - 2 * 16.dp.toPx()) / 2
+
+            // Draw the transparent circle
+            drawCircle(
+                color = Color.Transparent,
+                radius = circleRadius,
+                center = center
+            )
+
+            // Draw the static black border
+            drawCircle(
+                color = Color.White,
+                radius = circleRadius,
+                center = center,
+                style = Stroke(width = 4.dp.toPx())
+            )
+        }
+
+        // Box and Text elements
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
+                .padding(16.dp)
+                .padding(top = 300.dp), //  padding to move content down
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-
             // Start/Pause Button
             Button(
                 onClick = {
@@ -92,79 +172,8 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
                     isTimerRunning = !isTimerRunning
                 },
                 modifier = Modifier
-                    .width(294.dp)
-                    .height(78.dp)
-                    .clip(
-                        RoundedCornerShape(
-                            topStart = 40.dp,
-                            topEnd = 40.dp,
-                            bottomStart = 40.dp,
-                            bottomEnd = 40.dp
-                        )
-                    ),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = CustomColor,
-                    contentColor = Color.White
-                ),
-            ) {
-                // Button content
-                Text(
-                    text = if (isTimerRunning) "Pause" else "Start",
-                    textAlign = TextAlign.Center,
-                    fontSize = 30.sp,
-                    textDecoration = TextDecoration.None,
-                    letterSpacing = 0.sp,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .padding(top = 18.dp)
-                        .alpha(1f),
-                    color = Color.White,
-                    fontWeight = FontWeight.Black,
-                    fontStyle = FontStyle.Normal,
-                )
-
-            }
-
-            // Spacer for vertical spacing
-            Spacer(modifier = Modifier.height(8.dp))
-
-            // Circle
-            Canvas(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
-            ) {
-                val circleRadius =
-                    (size.minDimension - 2 * 5.5f) / 2
-                drawCircle(
-                    color = Color.Transparent,
-                    radius = circleRadius,
-                    center = center
-                )
-                drawCircle(
-                    color = Color.White,
-                    radius = circleRadius,
-                    center = center,
-                    style = Stroke(width = 5.5f, miter = 4f, join = StrokeJoin.Round)
-                )
-            }
-
-
-            // Spacer after Circle
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "User ID: $userId")
-
-            // Start Button
-            Button(
-                onClick = {
-
-                },
-                modifier = Modifier
                     .size(78.dp)
-                    .clip(RoundedCornerShape(50))
-                    .offset(y = (-12).dp),
+                    .clip(CircleShape),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = CustomColor,
                     contentColor = Color.White
@@ -174,20 +183,50 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
                     imageVector = if (isTimerRunning) Icons.Default.PlayArrow else Icons.Default.PlayArrow,
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(40.dp)
                 )
+            }
 
-                // Footer menu
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    FooterIcon(imageVector = Icons.Default.Home, color = CustomColor)
-                    FooterIcon(imageVector = Icons.Default.DateRange, color = CustomColor)
-                    FooterIcon(imageVector = Icons.Default.Check, color = CustomColor)
-                    FooterIcon(imageVector = Icons.Default.Favorite, color = CustomColor)
+            // Spacer to push down the Start/Pause Button and Timer
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Timer text
+            Text(
+                text = formatTime(timeRemaining),
+                fontSize = 48.sp,
+                color = Color.White,
+                modifier = Modifier.alpha(0.8f)
+            )
+
+            // Spacer for vertical spacing
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // User ID text
+            Text(text = "User ID: $userId")
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Spacer(modifier = Modifier.weight(1f)) // Spacer to push the footer menu to the bottom
+
+            // Footer menu
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(56.dp)
+                    .padding(vertical = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                FooterIcon(imageVector = Icons.Default.Home, color = CustomColor) {
+                    navController.navigate(Screen.PomodoroScreen.route)
+                }
+                FooterIcon(imageVector = Icons.Default.DateRange, color = CustomColor) {
+                    navController.navigate(Screen.TimeTableScreen.route)
+                }
+                FooterIcon(imageVector = Icons.Default.Check, color = CustomColor) {
+                    navController.navigate(Screen.ToDoListScreen.route)
+                }
+                FooterIcon(imageVector = Icons.Default.Phone, color = CustomColor) {
+                    navController.navigate(Screen.Contact.route)
                 }
             }
         }
@@ -196,12 +235,10 @@ fun CustomBoxWithText(navController: NavController, userId: String?) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FooterIcon(imageVector: ImageVector, color: Color) {
+fun FooterIcon(imageVector: ImageVector, color: Color, onClick: () -> Unit) {
     Surface(
         color = Color.Transparent,
-        onClick = {
-            // Handle icon click
-        },
+        onClick = onClick,
         modifier = Modifier
             .size(40.dp)
             .padding(8.dp)
@@ -213,6 +250,13 @@ fun FooterIcon(imageVector: ImageVector, color: Color) {
             modifier = Modifier.size(40.dp)
         )
     }
+}
+
+// Function to format time in mm:ss format
+private fun formatTime(millis: Long): String {
+    val minutes = millis / 1000 / 60
+    val seconds = (millis / 1000) % 60
+    return "%02d:%02d".format(minutes, seconds)
 }
 
 private fun createTimer(
@@ -233,11 +277,11 @@ private fun createTimer(
 
 @Preview
 @Composable
-fun PreviewCustomBoxWithText() {
+fun PreviewPomodoro() {
     MaterialTheme {
         Surface {
             val navController = rememberNavController()
-            CustomBoxWithText(navController,"data")
+            Pomodoro(navController, "data")
         }
     }
 }
