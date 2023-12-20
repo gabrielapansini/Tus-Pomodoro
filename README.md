@@ -8,6 +8,9 @@
 ## Features
 - **Pomodoro Timer:** Implement the renowned Pomodoro technique to optimize study sessions.
 - **Task List (To-Do List):** Create and manage detailed to-do lists.
+- **Course Timetable:** Check your course timetable.
+- **Contact Us:** Call your college from this app.
+
 
 ## Benefits
 - Improve focus and attention.
