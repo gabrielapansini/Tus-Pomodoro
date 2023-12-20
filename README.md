@@ -8,13 +8,19 @@
 ## Features
 - **Pomodoro Timer:** Implement the renowned Pomodoro technique to optimize study sessions.
 - **Task List (To-Do List):** Create and manage detailed to-do lists.
-- **Lo-fi Music Selection:** Enjoy copyright-free lo-fi ambient music for a calm study environment.
 
 ## Benefits
 - Improve focus and attention.
 - Efficient task management.
 - Foster mindful productivity.
 
+
+## Features Added recently
+- notification to the user to go to break after the pomodoro timer ends
+- App Icon Added
+- To do List (add and delete tasks)
+
+  
 ## Installation
 1. Clone the repository.
    ```bash
