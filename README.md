@@ -24,4 +24,4 @@
 ## Installation
 1. Clone the repository.
    ```bash
-   git clone https://github.com/your-username/tus-pomodoro.git
+   git clone https://github.com/gabrielapansini/tus-pomodoro.git
