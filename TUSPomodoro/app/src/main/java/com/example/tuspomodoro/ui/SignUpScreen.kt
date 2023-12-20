@@ -107,8 +107,8 @@ fun SignUpScreen(navController: NavController, viewModel: AuthRegViewModel = vie
                 ),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
 
-        ) {
-            
+            ) {
+
             Text(
                 text = "TUS POMODORO",
                 textAlign = TextAlign.Center,
@@ -198,7 +198,7 @@ fun SignUpScreen(navController: NavController, viewModel: AuthRegViewModel = vie
                        */
                 }
 
-                      },
+            },
             modifier = Modifier.padding(10.dp),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
         ) {

@@ -7,6 +7,11 @@ data class DaySchedule(
     val FourthClass: ClassDetails,
     val FifthClass: ClassDetails
 ) {
+
+
+    //constructor for creating a DaySchedule object from a Map
+// map A Map containing raw data for each class in the schedule.
+// The keys are class names, and the values are Maps representing class details.
     constructor(map: Map<String, Any>) : this(
         FirstClass = ClassDetails(map["FirstClass"] as HashMap<String, Any>),
         SecondClass = ClassDetails(map["SecondClass"] as HashMap<String, Any>),

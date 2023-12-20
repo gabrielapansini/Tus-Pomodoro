@@ -11,11 +11,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.PlayArrow
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -29,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -46,14 +44,26 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.tuspomodoro.R
 import com.example.tuspomodoro.ui.theme.CustomColor
+import android.net.Uri
+
+
 
 @Composable
 fun Pomodoro(navController: NavController, userId: String?) {
     var isTimerRunning by remember { mutableStateOf(false) }
-    var initialDuration = remember { 25 * 60 * 1000L }
+    var initialDuration = remember { 1 * 60 * 1000L } // 1 minute timer
+    //var initialDuration = remember { 25 * 60 * 1000L } // USE THIS ONE FOR 25 MINUTES timer
     var timeRemaining by remember { mutableStateOf(initialDuration) }
 
     var countDownTimer: CountDownTimer? by remember { mutableStateOf(null) }
+
+    var showBreakMessage by remember { mutableStateOf(false) }
+
+
+
+
+
+
 
     Box(
         modifier = Modifier
@@ -62,6 +72,7 @@ fun Pomodoro(navController: NavController, userId: String?) {
         contentAlignment = Alignment.TopCenter // Align content to the top center
     ) {
         // Image with background
+        //References for the background image: https://www.freepik.com/free-ai-image/cartoon-lofi-young-manga-style-girl-studying-while-listening-music-raining-street-ai-generative_43227423.htm
         Image(
             painter = painterResource(id = R.drawable.background),
             contentDescription = null,
@@ -162,9 +173,16 @@ fun Pomodoro(navController: NavController, userId: String?) {
             Button(
                 onClick = {
                     if (!isTimerRunning) {
-                        countDownTimer = createTimer(timeRemaining, 1000) { millisUntilFinished ->
-                            timeRemaining = millisUntilFinished
-                        }
+                        countDownTimer = createTimer(timeRemaining, 1000,
+                            onTick = { millisUntilFinished ->
+                                timeRemaining = millisUntilFinished
+                            },
+                            onFinish = {
+                                showBreakMessage = true
+                                // Reset the timer duration when it finishes
+                                timeRemaining = initialDuration
+                            }
+                        )
                         countDownTimer?.start()
                     } else {
                         countDownTimer?.cancel()
@@ -201,12 +219,10 @@ fun Pomodoro(navController: NavController, userId: String?) {
             // Spacer for vertical spacing
             Spacer(modifier = Modifier.height(16.dp))
 
-            // User ID text
-            Text(text = "User ID: $userId")
-
             Spacer(modifier = Modifier.height(40.dp))
 
             Spacer(modifier = Modifier.weight(1f)) // Spacer to push the footer menu to the bottom
+
 
             // Footer menu
             Row(
@@ -228,10 +244,36 @@ fun Pomodoro(navController: NavController, userId: String?) {
                 FooterIcon(imageVector = Icons.Default.Phone, color = CustomColor) {
                     navController.navigate(Screen.Contact.route)
                 }
+                // Show pop-up message using AlertDialog
+                if (showBreakMessage) {
+                    AlertDialog(
+                        onDismissRequest = {
+                            showBreakMessage = false
+                        },
+                        title = {
+                            Text("Break time!")
+                        },
+                        text = {
+                            Text("Go for a walk.")
+                        },
+                        confirmButton = {
+                            Button(
+                                onClick = {
+                                    showBreakMessage = false
+                                }
+                            ) {
+                                Text("OK")
+                            }
+                        }
+                    )
+                }
             }
+
         }
     }
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -262,7 +304,8 @@ private fun formatTime(millis: Long): String {
 private fun createTimer(
     millisInFuture: Long,
     countDownInterval: Long,
-    onTick: (Long) -> Unit
+    onTick: (Long) -> Unit,
+    onFinish: () -> Unit
 ): CountDownTimer {
     return object : CountDownTimer(millisInFuture, countDownInterval) {
         override fun onTick(millisUntilFinished: Long) {
@@ -270,7 +313,7 @@ private fun createTimer(
         }
 
         override fun onFinish() {
-
+            onFinish.invoke()
         }
     }
 }

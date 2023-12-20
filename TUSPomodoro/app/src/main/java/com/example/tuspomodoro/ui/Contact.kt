@@ -47,9 +47,9 @@ fun ContactUs(navController: NavController) {
             .fillMaxSize()
             .background(color = Color.Black)
             .padding(16.dp)
-            .wrapContentHeight(Alignment.CenterVertically) // Align the content vertically to the center
+            .wrapContentHeight(Alignment.CenterVertically) // align  vertically to the center
             .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, // Align the content horizontally to the center
+        horizontalAlignment = Alignment.CenterHorizontally, // Align horizontally to the center
     ) {
         Spacer(modifier = Modifier.height(64.dp))
 
@@ -121,7 +121,7 @@ fun FooterIcon(imageVector: ImageVector, color: Color) {
     Surface(
         color = Color.Transparent,
         onClick = {
-            // Handle icon click
+            // TO DO
         },
         modifier = Modifier
             .size(40.dp)
@@ -138,7 +138,7 @@ fun FooterIcon(imageVector: ImageVector, color: Color) {
 
 @Composable
 fun ContactInfo() {
-    // Display your contact information, e.g., email, phone number, etc.
+    // Display your contact information etc.
     Text(
         text = "Contact Us",
         fontSize = 30.sp,
@@ -175,6 +175,10 @@ fun ContactInfo() {
         )
     }
 }
+
+
+//References: https://stackoverflow.com/questions/44169564/how-to-call-phone-number-in-kotlin-android
+
 
 // Function to dial a phone number
 private fun dialPhoneNumber(context: android.content.Context, phoneNumber: String) {

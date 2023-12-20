@@ -46,6 +46,8 @@ fun ToDoList(navController: NavController) {
     val tasks = remember { mutableStateOf(mutableListOf("Task 1", "Task 2", "Task 3")) }
     var newTask by remember { mutableStateOf("") }
 
+
+    //function Add working now
     fun addTask() {
         if (newTask.isNotBlank()) {
             tasks.value = tasks.value.toMutableList().apply {
@@ -55,10 +57,18 @@ fun ToDoList(navController: NavController) {
         }
     }
 
-
+    //function delete working now
     fun deleteTask(task: String) {
-        tasks.value.remove(task)
+        try {
+            tasks.value = tasks.value.toMutableList().apply {
+                remove(task)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
+
+
 
     Column(
         modifier = Modifier
@@ -221,6 +231,8 @@ fun ToDoListItem(task: String, onCompletion: () -> Unit, onDelete: () -> Unit) {
                 color = Color.White,
                 style = MaterialTheme.typography.bodySmall
             )
+
+
         }
     }
 }

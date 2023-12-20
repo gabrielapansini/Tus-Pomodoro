@@ -8,6 +8,10 @@ class AuthRegViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
 
+    //References: https://auth0.com/blog/get-started-with-android-authentication-using-kotlin-part-1/
+    //I learned to implement the logic in this code lab
+
+    //even if the user minimize the app, when returning it will be the same user ID
     // LiveData to hold the error message
     val errorMessage = MutableLiveData<String>()
 
@@ -21,7 +25,7 @@ class AuthRegViewModel : ViewModel() {
             errorMessage.postValue("email or password cannot be empty")
             return
         }
-
+        //auth
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -69,12 +73,14 @@ class AuthRegViewModel : ViewModel() {
             }
     }
 
-    //Log out function
-    fun logoutUser() {
-        auth.signOut()
-        // Post null to the userId LiveData to indicate that the user is logged out
-        userId.postValue(null)
-    }
+
+
+//    //Log out function
+//    fun logoutUser() {
+//        auth.signOut()
+//        // Post null to the userId LiveData to indicate that the user is logged out
+//        userId.postValue(null)
+//    }
 
 
 }

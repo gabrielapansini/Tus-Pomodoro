@@ -98,8 +98,8 @@ fun LoginScreen(navController:NavController, viewModel: AuthRegViewModel = viewM
                 .clip(RoundedCornerShape(topStart = 40.dp, topEnd = 40.dp, bottomStart = 40.dp, bottomEnd = 40.dp)),
             colors = ButtonDefaults.buttonColors(containerColor = CustomColor, contentColor = Color.White),
 
-        ) {
-            
+            ) {
+
             Text(
                 text = "TUS POMODORO",
                 textAlign = TextAlign.Center,
@@ -127,7 +127,7 @@ fun LoginScreen(navController:NavController, viewModel: AuthRegViewModel = viewM
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
-                .background(MaterialTheme.colorScheme.background) 
+                .background(MaterialTheme.colorScheme.background)
                 .padding(16.dp)
                 .clip(MaterialTheme.shapes.medium)
         )

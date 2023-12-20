@@ -40,9 +40,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+//References: https://developer.android.com/guide/navigation/get-started
+
+
+//function to navigate
+//representing the navigation graph of the application.
+//startDestination The starting destination of the navigation graph.
 @Composable
 fun NavGraph(startDestination: String = Screen.SignUpScreen.route) {
+    // Create a NavController to navigate between composables
     val navController = rememberNavController()
+
+    //Create an instance of AuthRegViewModel to handle authentication and registration logic
     val viewModel: AuthRegViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = startDestination) {
@@ -64,7 +73,7 @@ fun NavGraph(startDestination: String = Screen.SignUpScreen.route) {
 @Composable
 fun LoginScreenPreview() {
     TUSPomodoroTheme {
-       // CustomBoxWithText()
+        // CustomBoxWithText()
     }
 }
 

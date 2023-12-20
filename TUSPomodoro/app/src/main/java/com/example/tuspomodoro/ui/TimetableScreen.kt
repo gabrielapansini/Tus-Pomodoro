@@ -45,7 +45,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun TimetableScreen(navController: NavController, ViewModel: TimeTableViewModel = viewModel()) {
-//Black background
     // Black background
     Column(
         modifier = Modifier
